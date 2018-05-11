@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Force Responsive Bridge Menu
-Description: Plugin que fuerza a mostrar el menú en versión responsive al ancho especificado.
+Description: Force to show the menu in responsive version below the specified width.
 Author: Ovi García - ovimedia.es
 Author URI: http://www.ovimedia.es/
-Text Domain: force_responsive_bridge_menu
-Version: 0.1
+Text Domain: force-responsive-bridge-menu
+Version: 0.2
 Plugin URI: http://www.ovimedia.es/
 */
 
@@ -17,58 +17,54 @@ if ( ! class_exists( 'force_responsive_bridge_menu' ) )
     {
         function __construct() 
         {   
+            add_action( 'init', array( $this, 'frbm_load_languages') );
             add_action( "wp_head", array( $this,  "frbm_head_style"), 10  );
-            add_action( 'admin_init', array( $this, 'frbm_register_options') );
-            add_action( 'admin_menu', array( $this, 'wype_admin_menu' ));
+            add_action( 'customize_register', array( $this, 'frbm_customize_register') );
+            add_filter( 'plugin_action_links_'.plugin_basename( plugin_dir_path( __FILE__ ) . 'force_responsive_bridge_menu.php'), array( $this, 'frbm_plugin_settings_link' ) );
         }
 
-        public function wype_admin_menu() 
-        {	
-            add_submenu_page('themes.php', 'Force Responsive Bridge Menu', 'Force Responsive Bridge Menu', 'manage_options',  
-                'frbm_options', array( $this,'frbm_form'));
-        }  
-
-        public function frbm_register_options() 
+        public function frbm_load_languages() 
         {
-            register_setting( 'frbm_data_options', 'frbm_value' );
-        }
-
-        public function frbm_form()
-        {
-            ?>
-
-            <div class="frbm_options_form">
-
-            <form method="post" action="options.php">
-
-                <h3><?php echo translate( 'Insert the width of screen to force responsive menu:', 'wp-private-posts' ); ?></h3>
-
-                <?php
-
-                    settings_fields( 'frbm_data_options' ); 
-                    do_settings_sections( 'frbm_data_options' ); 
-
-                ?>
-
-                <input type="number" id="frbm_value" name="frbm_value" placeholder="Screen Width" value="<?php echo get_option("frbm_value"); ?>" />
-
-                <?php submit_button(); ?>
-
-            </form>
-
-            </div>
-
-            <?php
+            load_plugin_textdomain( 'force-responsive-bridge-menu', false, '/'.basename( dirname( __FILE__ ) ) . '/languages/' ); 
         }
 
         public function frbm_head_style()
         {
-            echo "<style>@media screen and (min-width: 1000px) and (max-width: ".get_option("frbm_value")."px){";
-            echo "#menu-menu{display: none !important;}";
-            echo ".mobile_menu{display: block !important;margin-top: 40px !important;}";
-            echo ".mobile_menu_button{display: table !important;float: right !important;}";
-            echo ".header_inner_left {position: relative !important; width: 100% !important;}";
-            echo "}</style>";
+            if(get_option("frbm_value") != "")
+            {
+                echo "<style>@media screen and (min-width: 1000px) and (max-width: ".get_option("frbm_value")."px){";
+                echo "#menu-menu{display: none !important;}";
+                echo ".mobile_menu{display: block !important;margin-top: 40px !important;}";
+                echo ".mobile_menu_button{display: table !important;float: right !important;}";
+                echo ".header_inner_left {position: relative !important; width: 100% !important;}";
+                echo "}</style>";
+            }
+        }
+
+        public function frbm_customize_register( $wp_customize ) 
+        {
+            $wp_customize->add_section('force_responsive_bridge_menu', array(
+                'priority' => 100,
+                'title' => translate( 'Responsive Menu' , 'force-responsive-bridge-menu' )
+            ));
+        
+            $wp_customize->add_setting('frbm_value', array(
+                'default' => get_option("frbm_value"),
+                'type' => "option"
+            ));
+        
+            $wp_customize->add_control('frbm_value', array(
+                'label'   =>  translate( 'Force responsive menu for screens below (without px):', 'force-responsive-bridge-menu' ),
+                'section' => 'force_responsive_bridge_menu',
+                'type'    => 'number',
+            ));
+        }
+
+        public function frbm_plugin_settings_link( $links ) 
+        { 
+            $settings_link = '<a href="'.admin_url().'/customize.php">'.translate( 'Configure', 'force-responsive-bridge-menu' ).'</a>';
+            array_unshift( $links, $settings_link ); 
+            return $links; 
         }
     }  
 }
