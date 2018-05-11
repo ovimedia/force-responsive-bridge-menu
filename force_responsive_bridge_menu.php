@@ -9,6 +9,7 @@ Version: 0.1
 Plugin URI: http://www.ovimedia.es/
 */
 
+if ( ! defined( 'ABSPATH' ) ) exit; 
 
 if ( ! class_exists( 'force_responsive_bridge_menu' ) ) 
 {
@@ -27,7 +28,6 @@ if ( ! class_exists( 'force_responsive_bridge_menu' ) )
                 'frbm_options', array( $this,'frbm_form'));
         }  
 
-        
         public function frbm_register_options() 
         {
             register_setting( 'frbm_data_options', 'frbm_value' );
@@ -50,7 +50,7 @@ if ( ! class_exists( 'force_responsive_bridge_menu' ) )
 
                 ?>
 
-                    <input type="number" id="frbm_value" name="frbm_value" placeholder="Screen Width" value="<?php echo get_option("frbm_value"); ?>" />
+                <input type="number" id="frbm_value" name="frbm_value" placeholder="Screen Width" value="<?php echo get_option("frbm_value"); ?>" />
 
                 <?php submit_button(); ?>
 
@@ -64,17 +64,13 @@ if ( ! class_exists( 'force_responsive_bridge_menu' ) )
         public function frbm_head_style()
         {
             echo "<style>@media screen and (min-width: 1000px) and (max-width: ".get_option("frbm_value")."px){";
-
             echo "#menu-menu{display: none !important;}";
             echo ".mobile_menu{display: block !important;margin-top: 40px !important;}";
             echo ".mobile_menu_button{display: table !important;float: right !important;}";
             echo ".header_inner_left {position: relative !important; width: 100% !important;}";
             echo "}</style>";
         }
-    }
-    
-
-    
+    }  
 }
 
 $GLOBALS['force_responsive_bridge_menu'] = new force_responsive_bridge_menu();   
