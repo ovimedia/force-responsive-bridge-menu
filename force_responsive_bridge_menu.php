@@ -5,7 +5,7 @@ Description: Force to show the menu in responsive version below the specified wi
 Author: Ovi García - ovimedia.es
 Author URI: http://www.ovimedia.es/
 Text Domain: force-responsive-bridge-menu
-Version: 0.2
+Version: 0.3
 Plugin URI: http://www.ovimedia.es/
 */
 
@@ -33,7 +33,7 @@ if ( ! class_exists( 'force_responsive_bridge_menu' ) )
             if(get_option("frbm_value") != "")
             {
                 echo "<style>@media screen and (min-width: 1000px) and (max-width: ".get_option("frbm_value")."px){";
-                echo "#menu-menu{display: none !important;}";
+                echo "#menu-menu, .main_menu.left_side,.main_menu.right_side{display: none !important;}";
                 echo ".mobile_menu{display: block !important;margin-top: 40px !important;}";
                 echo ".mobile_menu_button{display: table !important;float: right !important;}";
                 echo ".header_inner_left {position: relative !important; width: 100% !important;}";
