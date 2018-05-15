@@ -34,7 +34,7 @@ if ( ! class_exists( 'force_responsive_bridge_menu' ) )
             {
                 echo "<style>@media screen and (min-width: 1000px) and (max-width: ".get_option("frbm_value")."px){";
                 echo "#menu-menu, .main_menu.left_side,.main_menu.right_side{display: none !important;}";
-                echo ".mobile_menu{display: block !important;margin-top: 40px !important;}";
+                echo ".mobile_menu{display: block !important;}";
                 echo ".mobile_menu_button{display: table !important;float: right !important;}";
                 echo ".header_inner_left {position: relative !important; width: 100% !important;}";
                 echo "}</style>";
