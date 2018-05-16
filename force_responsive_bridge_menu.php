@@ -32,12 +32,17 @@ if ( ! class_exists( 'force_responsive_bridge_menu' ) )
         {
             if(get_option("frbm_value") != "")
             {
-                echo "<style>@media screen and (min-width: 1000px) and (max-width: ".get_option("frbm_value")."px){";
+                echo "<style>";
+                echo "@media screen and (min-width: 1000px) and (max-width: ".get_option("frbm_value")."px){";
                 echo "#menu-menu, .main_menu.left_side,.main_menu.right_side{display: none !important;}";
-                echo ".mobile_menu{display: block !important;}";
-                echo ".mobile_menu_button{display: table !important;float: right !important;}";
-                echo ".header_inner_left {position: relative !important; width: 100% !important;}";
-                echo "}</style>";
+                echo "}";
+                echo "@media screen and (min-width: ".get_option("frbm_value")."px){";
+                echo ".side_menu_button{display: none !important;}";
+                echo "}";
+                echo "@media screen and (max-width: 1000px){";
+                echo ".side_menu_button{display: none !important;}";
+                echo "}";
+                echo "</style>";
             }
         }
 
