@@ -37,10 +37,10 @@ if ( ! class_exists( 'force_responsive_bridge_menu' ) )
                 echo ".main_menu>ul, .main_menu.left_side,.main_menu.right_side{display: none !important;}";
                 echo "}";
                 echo "@media screen and (min-width: ".get_option("frbm_value")."px){";
-                echo ".side_menu_button{display: none !important;}";
+                echo ".side_menu_button a{display: none !important;}";
                 echo "}";
                 echo "@media screen and (max-width: 1000px){";
-                echo ".side_menu_button{display: none !important;}";
+                echo ".side_menu_button a{display: none !important;}";
                 echo "}";
                 echo "</style>";
             }
